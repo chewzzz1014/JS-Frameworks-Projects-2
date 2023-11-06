@@ -1,7 +1,13 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <PostList :posts="posts" />
+    <div v-if="error">{{ error }}</div>
+    <div v-if="posts.length">
+      <PostList :posts="posts" />
+    </div>
+    <div v-else>
+      Loading...
+    </div>
   </div>
 </template>
 
@@ -15,12 +21,24 @@ export default {
     PostList,
   },
   setup() {
-    const posts = ref([
-      {title: 'Welcome to the blog', body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita similique in mollitia, nihil qui ad iusto ratione pariatur. Sit placeat cupiditate ipsam nobis adipisci. Quam itaque sed eos! Ab, ipsa! Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam accusamus, sint fugiat eveniet aliquid ex, assumenda maxime, pariatur itaque dolore quis natus facilis consequatur nemo beatae? Laudantium consequuntur iusto repellat.', id: 1},
-      {title: 'Top 5 CSS tips', body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita similique in mollitia, nihil qui ad iusto ratione pariatur. Sit placeat cupiditate ipsam nobis adipisci. Quam itaque sed eos! Ab, ipsa! Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam accusamus, sint fugiat eveniet aliquid ex, assumenda maxime, pariatur itaque dolore quis natus facilis consequatur nemo beatae? Laudantium consequuntur iusto repellat.', id: 2},
-    ])
+    const posts = ref([])
+    const error = ref(null)
 
-    return {posts}
+    const load = async() => {
+      try {
+        let data = await fetch('http://localhost:3000/posts')
+        if (!data.ok) {
+          throw Error('No data available')
+        }
+        posts.value = await data.json()
+      } catch(err) {
+        error.value = err.message
+        console.log(error.value)
+      }
+    }
+
+    load()
+    return {posts, error}
   },
 }
 </script>
