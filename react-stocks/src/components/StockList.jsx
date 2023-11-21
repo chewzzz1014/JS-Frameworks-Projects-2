@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import finnHub from "../api/finnHub"
 
 function StockList() {
-    const [watchList, setWatchList] = useState(['GOOGL', 'MSFT', 'AMZ'])
+    const [watchList, setWatchList] = useState(['GOOGL', 'MSFT', 'AMZN'])
     const [stock, setStock] = useState([])
 
     useEffect(() => {
