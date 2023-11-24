@@ -8,7 +8,9 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav
+        :class="[`navbar-${theme}`, `bg-${theme}`, 'navbar', 'navbar navbar-expand-lg']"
+    >
         <div class="container-fluid">
             <a href="#" class="navbar-brand">My Vue</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -16,26 +18,40 @@
                     <a 
                         :href="page.link.url"
                         class="nav-link"
+                        :class="{active: activePage === key}"
                         aria-current="page"
                         :title="`This link goes to ${page.link.text} page`"
-                        @click=""
+                        @click.prevent="activePage = key"
                     >{{ page.link.text }}</a>
                 </li>
             </ul>
+            <form class="d-flex">
+                <button
+                    class="btn btn-primary"
+                    @click.prevent="toggleTheme"
+                >
+                    Toggle
+                </button>
+            </form>
         </div>
     </nav>
 
     <div id="content" class="container">
-        <h1>{{ pageTitle }}</h1>
-        <p>{{ content }}</p>
+        <h1>{{ pages[activePage].pageTitle }}</h1>
+        <p>{{ pages[activePage].content }}</p>
     </div>
 
     <script>
         Vue.createApp({
+            computed: {
+                navbarClasses() {
+                    return this.useDarkNavbar ? 'navbar-dark bg-dark' : 'navbar-light bg-light'
+                },
+            },
             data() {
                 return {
-                    pageTitle: 'Hello, Vue',
-                    content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis officiis impedit iste, quidem porro quaerat earum quibusdam facere assumenda cupiditate nostrum provident perferendis iure. Quisquam alias aliquid eius in ducimus!',
+                    activePage: 0,
+                    theme: 'light',
                     pages: [
                         {
                             link: {text: 'Home', url: 'home.html'},
@@ -54,6 +70,11 @@
                         }, 
                     ],
                 }
+            },
+            methods: {
+                toggleTheme() {
+                    this.theme = this.theme === 'light' ? 'dark' : 'light'
+                },
             }
         }).mount('body')
     </script>
