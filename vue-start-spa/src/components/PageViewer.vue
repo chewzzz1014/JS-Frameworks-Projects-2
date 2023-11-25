@@ -1,16 +1,28 @@
 <template>
     <div class="container">
-        <h1>{{page.pageTitle}}</h1>
+        <h1 class="emphasize">{{page.pageTitle}}</h1>
         <p>{{page.content}}</p>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['page'],
+    props: {
+        page: {
+            type: Object,
+            default(rawProps) { // defaulter
+                return {
+                    pageTitle: '',
+                    content: ''
+                }
+            }
+        }
+    },
 }
 </script>
 
-<style>
-
+<style scoped>
+.emphasize {
+    color: blue;
+}
 </style>

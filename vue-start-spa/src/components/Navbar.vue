@@ -6,14 +6,12 @@
             <a href="#" class="navbar-brand">My Vue</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li v-for="(page, key) in pages" class="nav-items" :key="key">
-                    <a 
-                        :href="page.link.url"
-                        class="nav-link"
-                        :class="{active: activePage === key}"
-                        aria-current="page"
-                        :title="`This link goes to ${page.link.text} page`"
+                    <NavbarLink
+                        :page="page"
+                        :isActive="activePage === key"
                         @click.prevent="$emit('navLinkChange', key)"
-                    >{{ page.link.text }}</a>
+                    >
+                    </NavbarLink>
             </li>
         </ul>
             <form class="d-flex">
@@ -29,16 +27,32 @@
 </template>
 
 <script>
+import NavbarLink from './NavbarLink.vue'
+
 export default {
+    components: {
+        NavbarLink
+    },
     props: ['pages', 'activePage'],
     data() {
         return {
             theme: 'dark',
         }
     },
+    created() {
+        this.getThemeSetting()
+    },
     methods: {
         toggleTheme() {
             this.theme = this.theme === 'light' ? 'dark' : 'light'
+            this.setThemeSetting()
+        },
+        getThemeSetting() {
+            let theme = localStorage.getItem('theme')
+            if (theme) this.theme = theme 
+        },
+        setThemeSetting() {
+            localStorage.setItem('theme', this.theme)
         },
     }
 }

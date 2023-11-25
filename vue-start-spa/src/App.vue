@@ -6,6 +6,7 @@
       @navLinkChange="updateActivePage"
     ></Navbar>
     <PageViewer
+      v-if="pages.length"
       :page="pages[activePage]"
     ></PageViewer>
   </div>
@@ -23,28 +24,20 @@ export default {
     data() {
       return {
         activePage: 0,
-        pages: [
-          {
-            link: {text: 'Home', url: 'home.html'},
-            pageTitle: 'Home Page',
-            content: 'This is the home content'
-          },
-          {
-            link: {text: 'About', url: 'about.html'},
-            pageTitle: 'About Page',
-            content: 'This is the about content'
-          },
-          {
-            link: {text: 'Contact', url: 'contact.html'},
-            pageTitle: 'Contact Page',
-            content: 'This is the contact content'
-          }, 
-        ],
+        pages: [],
       }
+    },
+    created() {
+      this.getPages()
     },
     methods: {
       updateActivePage(index) {
         this.activePage = index
+      },
+      async getPages() {
+        let res = await fetch('http://localhost:3000/pages')
+        let data = await res.json()
+        this.pages = data
       },
     },
 }
