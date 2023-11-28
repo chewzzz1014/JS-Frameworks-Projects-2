@@ -5,15 +5,17 @@
         <div class="container-fluid">
             <a href="#" class="navbar-brand">My Vue</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li v-for="(page, key) in publishedPages" class="nav-items" :key="key">
-                    <NavbarLink
-                        :page="page"
-                        :isActive="activePage === key"
-                        @click.prevent="$emit('navLinkChange', key)"
-                    >
-                    </NavbarLink>
-            </li>
-        </ul>
+                <NavbarLink
+                    v-for="(page, key) in publishedPages"
+                    :key="key"
+                    :index="key"
+                    class="nav-items"
+                    :page="page"
+                    :isActive="activePage === key"
+                    @click.prevent="$emit('navLinkChange', key)"
+                >
+                </NavbarLink>
+            </ul>
             <form class="d-flex">
                 <button
                     class="btn btn-primary"

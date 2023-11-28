@@ -77,6 +77,14 @@
 <script>
 export default {
     name: 'CreatePage',
+    emits: {
+        pageCreated({pageTitle, content, link, published}) {
+            if (!pageTitle || !content || !link || !link.text || !link.url) {
+                return false
+            }
+            return true
+        },
+    },
     computed: {
         isFormInvalid() {
             return !this.pageTitle || !this.content || !this.linkText || !this.linkUrl

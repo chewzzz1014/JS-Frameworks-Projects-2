@@ -3,16 +3,16 @@
     <Navbar
       :pages="pages"
       :activePage="activePage"
-      @navLinkChange="updateActivePage"
     ></Navbar>
+    <router-view></router-view>
     <!-- <PageViewer
       v-if="pages.length"
       :page="pages[activePage]"
-    ></PageViewer> -->
+    ></PageViewer>
     <CreatePage
       @pageCreated="pageCreated"
     >
-    </CreatePage>
+    </CreatePage> -->
   </div>
 </template>
 
@@ -35,6 +35,9 @@ export default {
     },
     created() {
       this.getPages()
+      this.$bus.$on('navbarLinkActivated', (idx) => {
+        this.activePage = idx
+      })
     },
     methods: {
       updateActivePage(index) {
