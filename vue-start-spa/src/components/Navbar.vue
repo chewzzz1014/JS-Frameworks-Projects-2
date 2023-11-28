@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <a href="#" class="navbar-brand">My Vue</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li v-for="(page, key) in pages" class="nav-items" :key="key">
+                <li v-for="(page, key) in publishedPages" class="nav-items" :key="key">
                     <NavbarLink
                         :page="page"
                         :isActive="activePage === key"
@@ -34,6 +34,11 @@ export default {
         NavbarLink
     },
     props: ['pages', 'activePage'],
+    computed: {
+        publishedPages() {
+            return this.pages.filter(x => x.published)
+        },
+    },
     data() {
         return {
             theme: 'dark',
