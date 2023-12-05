@@ -7,16 +7,18 @@
 
 <script>
 export default {
+    props: ['index'], // router's params
     created() {
-        this.page = this.$pages.getSinglePage(this.$route.params.index)
-
-        this.$watch(() => this.$route.params, (newParams, prevParams) => {
-            this.page = this.$pages.getSinglePage(newParams.index)
-        })
+        this.page = this.$pages.getSinglePage(this.index)
     },
     data() {
         return {
             page: null,
+        }
+    },
+    watch: {
+        index(newIdx, oldIdx) {
+            this.page = this.$pages.getSinglePage(newIdx)
         }
     },
 }
