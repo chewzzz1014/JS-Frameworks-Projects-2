@@ -39,7 +39,7 @@
 import NavbarLink from './NavbarLink.vue'
 
 export default {
-    inject: ['$pages'],
+    inject: ['$pages', '$bus'],
     components: {
         NavbarLink
     },
@@ -58,6 +58,11 @@ export default {
         this.getThemeSetting()
 
         this.pages = this.$pages.getAllPages()
+
+        // update navbar after a page was edited
+        this.$bus.$on('page-edited', () => {
+            this.pages = [...this.$pages.getAllPages()]
+        })
     },
     methods: {
         toggleTheme() {
