@@ -8,6 +8,7 @@
 <script>
 export default {
     props: ['index'], // router's params
+    inject: ['$pages'],
     created() {
         this.page = this.$pages.getSinglePage(this.index)
     },

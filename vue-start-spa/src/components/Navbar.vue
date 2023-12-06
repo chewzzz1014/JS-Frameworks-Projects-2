@@ -11,16 +11,15 @@
                     :index="key"
                     class="nav-items"
                     :page="page"
-                    :isActive="activePage === key"
-                    @activated="$emit('activated')"
                 >
                 </NavbarLink>
                 <li>
                     <router-link
-                        to="/create"
+                        to="/pages"
                         class="nav-link"
+                        active-class="active"
                         aria-current="page"
-                        >Create Page
+                        >Pages
                     </router-link>
                 </li>
             </ul>
@@ -40,10 +39,10 @@
 import NavbarLink from './NavbarLink.vue'
 
 export default {
+    inject: ['$pages'],
     components: {
         NavbarLink
     },
-    props: ['pages', 'activePage'],
     computed: {
         publishedPages() {
             return this.pages.filter(x => x.published)
@@ -52,10 +51,13 @@ export default {
     data() {
         return {
             theme: 'dark',
+            data: []
         }
     },
     created() {
         this.getThemeSetting()
+
+        this.pages = this.$pages.getAllPages()
     },
     methods: {
         toggleTheme() {
