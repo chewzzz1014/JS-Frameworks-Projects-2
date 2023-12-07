@@ -3,6 +3,16 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+require('dotenv').config()
+const mongoose = require('mongoose');
+
+// setup mongodb
+mongoose.set('strictQuery', false);
+const mongoDB = `mongodb+srv://chewzzz:${process.env.MONGODB_PASSWORD}@cluster0.myodohn.mongodb.net/?retryWrites=true&w=majority`
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDB)
+}
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
