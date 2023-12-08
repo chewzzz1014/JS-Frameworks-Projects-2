@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Message Board</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>Messages Board</h1>
+
+    <ul>
+      <% messages.forEach(message => { %>
+        <li>
+          <strong><%= message.user %></strong>: <%= message.text %> 
+          <span style="font-size: 0.8em; color: #888;">(<%= message.added.toLocaleString() %>)</span>
+        </li>
+      <% }); %>
+    </ul>
   </body>
 </html>
