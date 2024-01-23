@@ -7,7 +7,7 @@
             </router-link>
         </div>
         <div class="nav-links">
-            <ul>
+            <ul v-show="!mobile">
                 <router-link class="link" to="#">Home</router-link>
                 <router-link class="link" to="#">Blogs</router-link>
                 <router-link class="link" to="#">Create Post</router-link>
@@ -15,8 +15,8 @@
             </ul>
         </div>
     </nav>
-    <MenuIcon class="menu-icon" />
-    <transition class="mobile-nav">
+    <MenuIcon class="menu-icon" @click="toggleMobileNav" v-show="mobile" />
+    <transition class="mobile-nav" v-show="mobileNav">
         <ul>
             <router-link class="link" to="#">Home</router-link>
             <router-link class="link" to="#">Blogs</router-link>
@@ -36,9 +36,30 @@ export default {
     },
     data() {
         return {
-
+            mobile: null,
+            mobileNav: null,
+            windowWidth: null,
         }
     },
+    created() {
+        window.addEventListener('resize', this.checkScreen)
+        this.checkScreen()
+    },
+    methods: {
+        checkScreen() {
+            this.windowWidth = window.innerWidth
+            if (this.windowWidth<=750) {
+                this.mobile = true
+                return
+            }
+            this.mobile = false
+            this.mobileNav = false
+            return
+        }, 
+        toggleMobileNav() {
+            this.mobileNav = !this.mobileNav
+        }
+    }
 }
 </script>
 
@@ -50,6 +71,7 @@ header {
     z-index: 99;
 
     .link {
+        color: #000;
         font-weight: 500;
         padding: 0 8px;
         transition: .3s color ease;
@@ -115,11 +137,24 @@ header {
         background-color: #303030;
         top: 0;
         left: 0;
+
+        .link {
+            padding: 15px 0;
+            color: #fff;
+        }
     }
 
-    .link {
-        padding: 15px 0;
-        color: #fff
+    .mobile-nav-enter-active, .mobile-nav-leave-active {
+        transition: all 1s ease;
+    }
+    .mobile-nav-enter {
+      transform: translateX(-250px);  
+    }
+    .mobile-nav-enter-to {
+        transform: translateX(0);
+    }
+    .mobile-nav-leave-to {
+        transform: translateX(-250px);
     }
 }
 </style>
